@@ -8,4 +8,4 @@ ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk \
 
 RUN set -x && \
     apk update && \
-	apk add openjdk8="$JAVA_ALPINE_VERSION"
+	apk add openjdk8="$JAVA_ALPINE_VERSION" git maven
