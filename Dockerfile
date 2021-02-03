@@ -3,18 +3,27 @@ FROM centos:centos7
 MAINTAINER coolbeevip@gmail.com
 
 ARG MAVEN_VERSION=3.6.3
-ENV MAVEN_URL http://ftp.halifax.rwth-aachen.de
-ENV MAVEN_PKG ${MAVEN_URL}/apache/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-ENV MAVEN_HOME /opt/apache-maven-${MAVEN_VERSION}
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${MAVEN_HOME}/bin
 
-RUN yum install -y \
-       java-1.8.0-openjdk-1.8.0.262.b10-0.el7_8 \
-       java-1.8.0-openjdk-devel-1.8.0.262.b10-0.el7_8 \
-       git \
-    && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/jre/lib/security/java.security \
-    && yum clean all
+USER root
 
-ENV JAVA_HOME /etc/alternatives/jre
+# java
+RUN yum update -y && \
+    yum install -y which java-1.8.0-openjdk java-1.8.0-openjdk-devel && \
+    yum clean all
 
-RUN curl ${MAVEN_PKG} | tar xz
+ENV JAVA_HOME /usr/lib/jvm/java
+
+# maven
+RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
+  && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
+  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+ENV MAVEN_VERSION=${MAVEN_VERSION}
+ENV M2_HOME /usr/share/maven
+ENV maven.home $M2_HOME
+ENV M2 $M2_HOME/bin
+ENV PATH $M2:$PATH
+
+USER 10001
+
+CMD ["mvn","-version"]
