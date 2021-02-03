@@ -1,4 +1,4 @@
-* JDK 8.272.10
+* JDK 1.8.0_272
 * Maven 3.6.3
 * Git 2.30.0
-* Docker CE CLI 19.03.15
+* Docker 19.03.15
