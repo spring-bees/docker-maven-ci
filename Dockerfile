@@ -26,6 +26,13 @@ ENV PATH $M2:$PATH
 # git
 RUN yum -y install git
 
+# docker
+
+RUN yum install -y yum-utils
+RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+RUN yum-config-manager --disable docker-ce-nightly
+RUN yum install -y docker-ce-cli containerd.io
+
 # clean
 RUN yum clean all
 
