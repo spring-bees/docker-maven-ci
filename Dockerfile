@@ -8,8 +8,7 @@ USER root
 
 # java
 RUN yum update -y && \
-    yum install -y which java-1.8.0-openjdk java-1.8.0-openjdk-devel && \
-    yum clean all
+    yum install -y which java-1.8.0-openjdk java-1.8.0-openjdk-devel
 
 ENV JAVA_HOME /usr/lib/jvm/java
 
@@ -23,6 +22,12 @@ ENV M2_HOME /usr/share/maven
 ENV maven.home $M2_HOME
 ENV M2 $M2_HOME/bin
 ENV PATH $M2:$PATH
+
+# git
+RUN yum install git
+
+# clean
+RUN yum clean all
 
 USER 10001
 
