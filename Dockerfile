@@ -24,7 +24,7 @@ ENV M2 $M2_HOME/bin
 ENV PATH $M2:$PATH
 
 # git
-RUN yum install git
+RUN yum -y install git
 
 # clean
 RUN yum clean all
