@@ -1,5 +1,11 @@
-FROM maven:3.6.3-jdk-8
+FROM docker:19.03.15-dind
 
 MAINTAINER coolbeevip@gmail.com
 
-RUN apt-get update && apt-get install -y git docker-ce-cli
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk \
+    PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin \
+    JAVA_ALPINE_VERSION=8.272.10-r4
+
+RUN set -x && \
+    apk update && \
+	apk add openjdk8="$JAVA_ALPINE_VERSION"
