@@ -31,7 +31,7 @@ RUN yum -y install git
 RUN yum install -y yum-utils
 RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 RUN yum-config-manager --disable docker-ce-nightly
-RUN yum list docker-ce --showduplicates | sort –r
+RUN yum list docker-ce --showduplicates
 RUN yum install -y docker-ce-cli containerd.io
 
 # clean
