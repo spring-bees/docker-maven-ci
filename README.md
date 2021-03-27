@@ -4,3 +4,4 @@
 * Maven 3.6.3
 * Git 2.30.2
 * Bash 5.1.0
+* Glibc 2.29
