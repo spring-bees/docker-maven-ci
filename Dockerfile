@@ -1,44 +1,11 @@
-FROM centos:centos7
+FROM docker:19.03.15
 
 MAINTAINER coolbeevip@gmail.com
 
-ARG MAVEN_VERSION=3.6.3
-ARG DOCKER_VERSION=19.03.15
-ARG GIT_VERSION=2.24.3
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk \
+    PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin \
+    JAVA_ALPINE_VERSION=8.275.01-r0
 
-USER root
-
-# java
-RUN yum update -y && \
-    yum install -y which java-1.8.0-openjdk java-1.8.0-openjdk-devel
-
-ENV JAVA_HOME /usr/lib/jvm/java
-
-# maven
-RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
-  && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
-
-ENV MAVEN_VERSION=${MAVEN_VERSION}
-ENV M2_HOME /usr/share/maven
-ENV maven.home $M2_HOME
-ENV M2 $M2_HOME/bin
-ENV PATH $M2:$PATH
-
-# git
-RUN yum -y install git
-
-# docker
-
-RUN yum install -y yum-utils
-RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-RUN yum-config-manager --disable docker-ce-nightly
-RUN yum list docker-ce --showduplicates
-RUN yum install -y docker-ce-cli-${DOCKER_VERSION} containerd.io
-
-# clean
-RUN yum clean all
-
-USER 10001
-
-CMD ["mvn","-version"]
+RUN set -x && \
+  apk update && \
+	apk add --no-cache bash git maven openjdk8="$JAVA_ALPINE_VERSION"
